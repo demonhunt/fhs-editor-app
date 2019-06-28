@@ -24,6 +24,10 @@ export default class HomeMain extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    console.log(this.props.user)
+  }
+
   async requestCameraPermission(callBack) {
     if (Platform.OS == "android") {
       try {
@@ -56,6 +60,7 @@ export default class HomeMain extends Component {
         alignItems: 'center'
       }}>
         <Text>Welcome</Text>
+
         <TouchableOpacity style={{
           backgroundColor: globalSetting.main_orange_color,
           padding: 20,margin: 20
@@ -68,6 +73,17 @@ export default class HomeMain extends Component {
         
         >
           <Text>Logout</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{
+          backgroundColor: globalSetting.main_orange_color,
+          padding: 20,margin: 20
+        }}
+        onPress = {()=>{
+          this.props.navigation.navigate('scanSKU');
+        }}
+        
+        >
+          <Text>Scan</Text>
         </TouchableOpacity>
       </View>
     );

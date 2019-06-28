@@ -13,6 +13,7 @@ var initialState = {
   isLogin: false,
   userInfor: {},
   message: '',
+  useCamera:true
 }
 
 function user(state: State = initialState, action: Action): State {
