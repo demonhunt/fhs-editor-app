@@ -1,20 +1,13 @@
 import React, { Component } from 'react'
-import { Modal,View, Text, TouchableOpacity, StyleSheet,Alert,TouchableHighlight} from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import globalSetting from '../../common/setting'
-import { connect } from 'react-redux'
 
-class Footer extends Component {
+export default class Footer extends Component {
   constructor(props) {
     super(props)
     this.state = {
       visible: this.props.isShowConfirmView,
-      modalVisible: false,
-      data: this.props.book.logscan,
     }
-  }
-
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
   }
 
   render() {
@@ -28,7 +21,7 @@ class Footer extends Component {
           flex: 1,
         }}
         onPress={() => {
-          this.setModalVisible(true);
+          this.props.callBackRight()
         }}
       >
         <View style={styles.rightViewButton}>
@@ -41,7 +34,7 @@ class Footer extends Component {
               },
             ]}
           >
-            {this.props.rightText ? this.props.rightText : 'Lịch sử'}
+            {this.props.rightText}
           </Text>
         </View>
       </TouchableOpacity>
@@ -54,7 +47,7 @@ class Footer extends Component {
         onPress={() => {
           this.props.callBackLeft
             ? this.props.callBackLeft()
-            : this.props.goBack()
+            : this.props.navigation.goBack()
         }}
       >
         <View
@@ -81,43 +74,11 @@ class Footer extends Component {
     )
     return (
       <View style={{ height: 50, flexDirection: 'row' }}>
-        <View style={{marginTop: 22}}>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-          }}>
-          <View style={{marginTop: 22}}>
-            <View>
-              
-              <TouchableHighlight
-                onPress={() => {
-                  this.setModalVisible(!this.state.modalVisible);
-                }}>
-                <Text>Hide Modal</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
-        </Modal>
-      </View>
         {leftButton}
         {rightButton}
       </View>
     )
   }
-  showlogscan(logscan) {
-    var result = null;
-    if (logscan.length > 0) {
-      result = logscan.map((item, index) => {
-            return (
-                <Text key={index}>{item.sku}</Text>
-            );
-        });
-    }
-    return result;
-}
 }
 const styles = StyleSheet.create({
   container: {
@@ -148,11 +109,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 })
-
-function select(store) {
-  return {
-    book: store.book,
-  }
-}
-
-module.exports = connect(select)(Footer)

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity,Modal,TouchableHighlight,Alert } from 'react-native'
 import globalSetting from '../../../common/setting'
 import CameraView from './Camera/CameraView'
 import {showToast} from "../../../actions"
@@ -20,6 +20,7 @@ class ScanSKU extends Component {
     this.state = {
       isShowSuccess: false,
       isShowCamera: true,
+      modalVisible: false
     }
     this.isScanProduct = false
     this.scanFlag = false
@@ -82,6 +83,13 @@ class ScanSKU extends Component {
   goBack(){
       this.props.navigation.goBack()
   }
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
+
+  openmodal() {
+    this.setModalVisible(true);
+  }
 
   switchScanType(type = 'product') {
     if (type == 'bookshelf') {
@@ -122,8 +130,29 @@ class ScanSKU extends Component {
 
     return (
       <View style={styles.container}>
+        <View style={{marginTop: 22}}>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}>
+          <View style={{marginTop: 22}}>
+            <View>
+              
+              <TouchableHighlight
+                onPress={() => {
+                  this.setModalVisible(!this.state.modalVisible);
+                }}>
+                <Text>Hide Modal</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
+      </View>
         {camera}
-        <Footer showRightButton={'orange'} goBack={() => this.goBack()}></Footer>
+        <Footer navigation = {this.props.navigation} showRightButton={'orange'} rightText={'Lịch sử'} callBackRight={() => { this.openmodal() }}></Footer>
       </View>
     )
   }
