@@ -91,6 +91,14 @@ class ScanSKU extends Component {
     this.setModalVisible(true);
   }
 
+  switchScanType(type = 'product') {
+    if (type == 'bookshelf') {
+      this.isScanProduct = false
+    } else {
+      this.isScanProduct = true
+    }
+  }
+
   render() {
     var camera = <View style={{ flex: 1 }} />
     if (
@@ -99,18 +107,23 @@ class ScanSKU extends Component {
     ) {
       camera = (
         <CameraView
-          onBarCodeReadCallBack={e => {
+        onBarCodeReadCallBack={e => {
             this.onBarCodeRead(e)
           }}
-          onClickSearch={
-              text=>this.onClickSearch(text)
-          }
           scanFlag={this.scanFlag}
           goBack={() => this.goBack()}
-          isScanProduct={ true } //false = QR, true = barcode
-          title={['Quét SKU']}
+          isScanProduct={this.isScanProduct}
+          onClickSearch={searchText => this.onClickSearch(searchText)}
+          // title={this.isScanProduct ? 'Scan Sách' : 'Scan Kệ'}
+          title={['Scan sách', 'Scan kệ']}
+          switchScanType={type => {
+            this.switchScanType(type)
+          }}
           noFooterBar = {true}
-          noTextInput={false}
+          isScanProduct={this.isScanProduct}
+          callBackRightButton={() => {
+            this.goToConfirmView()
+          }}
         />
       )
     }
