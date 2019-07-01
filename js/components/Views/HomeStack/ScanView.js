@@ -22,7 +22,7 @@ class ScanSKU extends Component {
       isShowCamera: true,
       modalVisible: false
     }
-    this.isScanProduct = false
+    this.isScanProduct = true
     this.scanFlag = false
     this.locationData = {}
     this.isShowShelfToast = false,
