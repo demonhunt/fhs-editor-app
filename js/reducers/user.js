@@ -1,8 +1,6 @@
 'use strict'
 
 import type { Action } from '../actions/types'
-import Models from '../common/Models/Models'
-
 export type State = {
   isLogin: boolean,
   userInfor: ?any,
@@ -13,13 +11,13 @@ var initialState = {
   isLogin: false,
   userInfor: {},
   message: '',
-  useCamera:true
+  useCamera:true,
 }
 
 function user(state: State = initialState, action: Action): State {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
-        console.log("tui dung");
+        //console.log("tui dung");
       return {
         ...state,
         success: true,
@@ -45,7 +43,6 @@ function user(state: State = initialState, action: Action): State {
         ...state,
     
       }
-   
     default:
       return state
   }

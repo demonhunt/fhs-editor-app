@@ -16,8 +16,13 @@ function ApiPost(url,data) : ThunkAction {
       redirect: 'follow',
       referrer: 'no-referrer',
       body: JSON.stringify(data)
-  }).then(res => resolve(res.json()))
-  .catch(e=>reject(e))
+  }).then(res => {
+    //console.log(res.json());
+    resolve(res.json())}
+    )
+  .catch(e=> {
+    reject(e)
+  })
   ;
   }
 )

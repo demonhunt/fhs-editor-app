@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import globalSetting from '../../../common/setting'
-import Dimensions from 'Dimensions'
 import CameraView from './Camera/CameraView'
-
+import {showToast} from "../../../actions"
 import { connect } from 'react-redux'
-
+import { scan } from '../../../actions/scan'
+import Footer from '../../Common/Footer'
 
 class ScanSKU extends Component {
   static navigationOptions = {
@@ -19,16 +19,21 @@ class ScanSKU extends Component {
     }
     this.state = {
       isShowSuccess: false,
-
       isShowCamera: true,
     }
     this.isScanProduct = false
     this.scanFlag = false
     this.locationData = {}
-    this.isShowShelfToast = false
+    this.isShowShelfToast = false,
+    this.listener = this.props.navigation.addListener("willFocus", () => {
+      this.turnOnCamera();
+      });
 
   }
   componentDidMount() {
+  }
+  componentWillUnmount() {
+    this.listener.remove();
   }
 
   turnOffCamera() {
@@ -42,16 +47,38 @@ class ScanSKU extends Component {
     this.scanFlag = false
     this.setState({ isShowCamera: true })
   }
+  checkbook(sku) {
+    let data = {
+      sessionId: this.props.user.userInfor.token,
+      bookstoreId: this.props.user.userInfor.bookstoreId,
+      sku: sku,
+      bundleId: 0,
+    }
+      this.props.dispatch(scan(data.sessionId, data.bookstoreId, data.sku))
+      .then(res => {
+        if(res == "scansuccess")
+        {
+          this.props.navigation.navigate('bookInforView')
+        }}
+      )
+      .catch(e =>{
+        if(e == "scanfail")
+        {
+          this.props.dispatch(showToast("Không tồn tại sản phẩm"))
+          this.turnOnCamera();
+        }
+        else {
+        }
+      })
+  }
   
   async onBarCodeRead(e){
-
+    this.checkbook(e.data);
   }
 
   async onClickSearch(text){
-
+    this.checkbook(text);
   }
-
-
   goBack(){
       this.props.navigation.goBack()
   }
@@ -72,9 +99,9 @@ class ScanSKU extends Component {
           }
           scanFlag={this.scanFlag}
           goBack={() => this.goBack()}
-          isScanProduct={false}
+          isScanProduct={ true } //false = QR, true = barcode
           title={['Quét SKU']}
-          isScanProduct={true}
+          noFooterBar = {true}
           noTextInput={false}
         />
       )
@@ -83,6 +110,7 @@ class ScanSKU extends Component {
     return (
       <View style={styles.container}>
         {camera}
+        <Footer showRightButton={'orange'} goBack={() => this.goBack()}></Footer>
       </View>
     )
   }

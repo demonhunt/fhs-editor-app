@@ -9,17 +9,13 @@ import {
   Image,
   KeyboardAvoidingView,
 } from 'react-native'
-import { CheckBox } from 'react-native-elements'
 import globalSetting from '../../common/setting'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import ImageUtil from '../../common/image/ImageUtil'
 import { connect } from 'react-redux'
 import AlertView from './AlertView'
 import { login, chooseDatabase } from '../../actions'
-import { ApiPost } from '../../actions/apiFetcher'
 import ShowLoadingView from '../../common/ShowLoadingView'
-var md5Hex = require('md5-hex')
-import Toast from 'react-native-root-toast'
 
 class LoginView extends Component {
   constructor(props) {

@@ -4,6 +4,7 @@ import {combineReducers} from 'redux';
 
  const appReducer = combineReducers({
   user: require('./user'),
+  book: require('./book'),
   chooseDatabase: require('./chooseDatabase'),
 
 })
@@ -11,8 +12,8 @@ import {combineReducers} from 'redux';
 
 const rootReducer = (state, action) => {
   if (action.type === 'RESET_APP') {
-    const {user,chooseDatabase} = state
-    state = {user,chooseDatabase}
+    const {user,chooseDatabase,book} = state
+    state = {user,chooseDatabase,book}
   }
 
   return appReducer(state, action)

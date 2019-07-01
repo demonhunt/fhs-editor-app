@@ -5,7 +5,8 @@ import { View,SafeAreaView } from "react-native";
 import { createStackNavigator } from "react-navigation";
 import HomeMain from "./components/Views/HomeStack/HomeMain";
 import LoginView from "./components/Views/LoginView";
-import ScanSKU from "./components/Views/HomeStack/ScanView"
+import ScanSKU from "./components/Views/HomeStack/ScanView";
+import BookInforView from "./components/Views/HomeStack/BookInforView";
 
 class BookshelfApp extends Component {
   constructor(props) {
@@ -33,9 +34,10 @@ class BookshelfApp extends Component {
     const HomeStack = createStackNavigator(
       {
         home: { screen: HomeMain },
-        scanSKU: {screen: ScanSKU}
+        scanSKU: {screen: ScanSKU},
+        bookInforView: {screen: BookInforView}
       },
-
+      
       {
         initialRouteName: "home"
       }
