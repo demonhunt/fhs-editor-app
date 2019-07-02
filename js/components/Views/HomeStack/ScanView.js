@@ -6,6 +6,8 @@ import {showToast} from "../../../actions"
 import { connect } from 'react-redux'
 import { scan } from '../../../actions/scan'
 import Footer from '../../Common/Footer'
+import LogScan from '../LogScan'
+
 
 class ScanSKU extends Component {
   static navigationOptions = {
@@ -20,7 +22,8 @@ class ScanSKU extends Component {
     this.state = {
       isShowSuccess: false,
       isShowCamera: true,
-      modalVisible: false
+      modalVisible: false,
+      logscan: this.props.book.logscan
     }
     this.isScanProduct = true
     this.scanFlag = false
@@ -90,6 +93,31 @@ class ScanSKU extends Component {
   openmodal() {
     this.setModalVisible(true);
   }
+  closemodal() {
+    this.setModalVisible(false);
+  }
+  showlogscan(logscans){
+    var result = null;
+    if (logscans.length >0) {
+      result = logscans.map((item, index) => {
+        if(item.flag == true){
+          return(
+            <Text style={{color:'red'}}>
+              {item.sku}
+            </Text>
+          );
+        }
+        else{
+          return(
+            <Text>
+              {item.sku}
+            </Text>
+          );
+        }
+      });
+    }
+    return result;
+  }
 
   switchScanType(type = 'product') {
     if (type == 'bookshelf') {
@@ -130,27 +158,7 @@ class ScanSKU extends Component {
 
     return (
       <View style={styles.container}>
-        <View style={{marginTop: 22}}>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-          }}>
-          <View style={{marginTop: 22}}>
-            <View>
-              
-              <TouchableHighlight
-                onPress={() => {
-                  this.setModalVisible(!this.state.modalVisible);
-                }}>
-                <Text>Hide Modal</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
-        </Modal>
-      </View>
+        <LogScan message={this.showlogscan(this.state.logscan)} title={'Lịch sử thao tác'} isShowAlertView={this.state.modalVisible} buttonTittle={'Close'} callBack={() => { this.closemodal() }}></LogScan>
         {camera}
         <Footer navigation = {this.props.navigation} showRightButton={'orange'} rightText={'Lịch sử'} callBackRight={() => { this.openmodal() }}></Footer>
       </View>
@@ -281,6 +289,7 @@ const styles = StyleSheet.create({
 function select(store) {
   return {
     user: store.user,
+    book: store.book,
   }
 }
 

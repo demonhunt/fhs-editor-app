@@ -9,7 +9,6 @@ function scan(sessionId,bookstoreId,sku): ThunkAction {
         sku: sku,
         bundleId: 0,
     }
-    var tamp = dispatch(ApiPost("bookshelf/product/scan", data));
     
     return new Promise ((resolve,reject) => {dispatch(ApiPost("bookshelf/product/scan", data)).then(function(response) {
       //console.log("o day ne ma"); 
@@ -18,7 +17,8 @@ function scan(sessionId,bookstoreId,sku): ThunkAction {
         dispatch({
           type: "SCAN_SUCCESS",
           data: response.data,
-          sku: response.data.sku
+          sku: response.data.sku,
+          name: response.data.name,
         });
         resolve("scansuccess")
         }
