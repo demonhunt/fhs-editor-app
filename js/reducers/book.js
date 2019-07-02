@@ -9,6 +9,7 @@ var initialState = {
   bookInfor: {},
   logscan: [{
     sku: '',
+    name: '',
     flag: false,
   }]
 }
@@ -22,6 +23,7 @@ function book(state: State = initialState, action: Action): State {
         logscan: [...state.logscan, 
           {
             sku: action.sku,
+            name: action.name,
             flag: true
           }]
       }
@@ -31,6 +33,7 @@ function book(state: State = initialState, action: Action): State {
         logscan: [...state.logscan, 
           {
             sku: action.sku,
+            name: '',
             flag: false
           }]
       }
