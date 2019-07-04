@@ -78,6 +78,7 @@ class LogScan extends Component {
               style={{
                 alignItems: 'center',
                 margin: 35,
+                paddingTop: 10,
                 paddingLeft: 10,
                 paddingRight: 10,
               }}
@@ -106,7 +107,7 @@ class LogScan extends Component {
               <Container>
                 <Content>
                   <List
-                    leftOpenValue={75}
+                    leftOpenValue={0}
                     rightOpenValue={-75}
                     dataSource={this.ds.cloneWithRows(this.state.listViewData)}
                     renderRow={data =>
@@ -114,10 +115,6 @@ class LogScan extends Component {
                         <TouchableOpacity onPress={() => { this.getbook(data.sku)}} 
                         style={{ width: '100%', paddingLeft: 10, paddingRight: 10 }}><Text >{data.sku} - {data.name}</Text></TouchableOpacity>
                       </ListItem>}
-                    renderLeftHiddenRow={data =>
-                      <Button full onPress={() => alert(data.sku)}>
-                        <Icon active name="information-circle" />
-                      </Button>}
                     renderRightHiddenRow={(data, secId, rowId, rowMap) =>
                       <Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap, data)}>
                         <Icon active name="trash" />
@@ -135,7 +132,8 @@ class LogScan extends Component {
                 alignItems: 'center',
                 backgroundColor: 'orange',
                 borderBottomLeftRadius: 18,
-                borderBottomRightRadius: 18
+                borderBottomRightRadius: 18,
+                marginBottom: 30
               }}
               onPress={() => {
                 setTimeout(() => {
