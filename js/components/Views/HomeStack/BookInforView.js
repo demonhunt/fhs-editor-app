@@ -3,26 +3,54 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'rea
 import { connect } from 'react-redux'
 import PriceFormat from '../../../common/PriceFormat'
 import globalSetting from "../../../common/setting"
+import Footer from '../../Common/Footer'
+import {savehistory} from '../../../actions/savehistory'
+import Header from '../../Common/HeaderCommon'
 
 class BookInforView extends Component {
+  static navigationOptions = {
+    header: null,
+  }
   constructor(props) {
     super(props)
     this.state = {
       data: this.props.book.bookInfor,
+      arrayhistory: [{
+        sku: this.props.book.bookInfor.sku,
+        name : this.props.book.bookInfor.name,
+        status : true
+      }],
+      showRightButton: this.props.navigation.state.params.showRightButton
     }
   }
-  
+  showFooter(showRightButton){
+    if(showRightButton === true){
+      return(
+      <Footer navigation = {this.props.navigation} 
+            showRightButton={'orange'} rightText={'Thêm'} 
+            callBackRight={() => { this.savehistory(this.state.arrayhistory)}}/>)
+    }
+    else {
+      return(
+      <Footer navigation = {this.props.navigation} />)
+    }
+  }
   componentDidMount() {
-    console.log(this.props.book)
+    //console.log(this.props.book)
+  }
+  savehistory(arrayhistory) {
+    this.props.dispatch(savehistory(arrayhistory));
+    this.props.navigation.goBack();
   }
 
   render() {
     let price = PriceFormat.formatTotal(this.state.data.price);
     return (
       <View style={styles.container}>
+      <Header headerCenter={"Thông tin sách"}></Header>
         <View style={styles.row}>
           <Image
-              style={{ width: 280, height: 280 }}
+              style={{ width: 280, height: 270 }}
               source={{uri: this.state.data.image}}
               resizeMode="contain"
             />
@@ -41,19 +69,7 @@ class BookInforView extends Component {
             <View style={[styles.box]}></View>
             <View style={[styles.box]}></View>
         </View>
-        <View style={styles.row3}>
-            <View style={{flex: 1,alignItems: 'center',}}>
-            <TouchableOpacity onPress = {()=>{ this.props.navigation.pop(2) }}>
-          <Text style={{
-          color: globalSetting.main_orange_color, margin: 11}}>Quay lại</Text>
-        </TouchableOpacity>
-            </View>
-            <View style={{flex: 1,alignItems: 'center',backgroundColor: globalSetting.main_orange_color}}>
-            <TouchableOpacity onPress = {()=>{this.props.navigation.goBack()}}>
-          <Text style={{ color: 'white', margin: 11}}>Scan tiếp sách</Text>
-        </TouchableOpacity>
-            </View>
-          </View>
+          {this.showFooter(this.state.showRightButton)}
       </View>
     );
   }

@@ -1,33 +1,83 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Modal,ListView } from 'react-native'
+import { Container, Header, Content, Button, Icon, List, ListItem, Text } from 'native-base';
 import globalSetting from '../../common/setting'
+import {deleteItem} from '../../actions/deleteItem'
+import { connect } from 'react-redux'
+import { scan } from '../../actions/scan'
 
-export default class LogScan extends Component {
+
+class LogScan extends Component {
   constructor(props) {
-    super(props)
+    super(props);
+    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    this.state = {
+      basic: true,
+      listViewData: this.props.message,
+      isShowAlertView: this.props.isShowAlertView
+    };
+  }
+  deleteRow(secId, rowId, rowMap,data) {
+    let index = this.getIndex(data.sku);
+    this.props.dispatch(deleteItem(index));
+    rowMap[`${secId}${rowId}`].props.closeRow();
+    const newData = [...this.state.listViewData];
+    newData.splice(rowId, 1);
+    this.setState({ listViewData: newData });
+  }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.message!=this.props.message){
+      this.setState({listViewData: nextProps.message})
+    }
+    if(nextProps.isShowAlertView!=this.props.isShowAlertView){
+      this.setState({isShowAlertView: nextProps.isShowAlertView})
+    }
+  }
+  getIndex(sku) {
+    let arr = this.state.listViewData;
+    return arr.findIndex(obj => obj.sku === sku);
+  }
+  getbook(sku) {
+    let data = {
+      sessionId: this.props.user.userInfor.token,
+      bookstoreId: this.props.user.userInfor.bookstoreId,
+      sku: sku,
+      bundleId: 0,
+    }
+      this.props.dispatch(scan(data.sessionId, data.bookstoreId, data.sku))
+      .then(res => {
+        if(res == "scansuccess")
+        {
+          this.setState({
+            isShowAlertView: false });
+          this.props.navigation.navigate('bookInforView',{showRightButton:false})
+        }}
+      )
   }
   render() {
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     return (
       <Modal
         animationType={'none'}
         transparent={true}
-        visible={this.props.isShowAlertView}
-        onRequestClose={() => {}}
+        visible={this.state.isShowAlertView}
+        onRequestClose={() => { }}
       >
         <View style={styles.container}>
           <View
             style={{
-              width: 260,
+              width: 310,
+              height: 450,
               backgroundColor: 'white',
               justifyContent: 'space-around',
               alignItems: 'center',
-              borderRadius: 10,
+              borderRadius: 18,
             }}
           >
             <View
               style={{
                 alignItems: 'center',
-                margin: 10,
+                margin: 35,
                 paddingLeft: 10,
                 paddingRight: 10,
               }}
@@ -35,7 +85,7 @@ export default class LogScan extends Component {
               <Text
                 style={{
                   fontWeight: 'bold',
-                  fontSize: 15,
+                  fontSize: 22,
                   textAlign: 'center',
                   color: globalSetting.main_text_color,
                 }}
@@ -47,31 +97,35 @@ export default class LogScan extends Component {
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',
-                paddingLeft: 10,
-                paddingRight: 10,
-                paddingTop: 10,
-                paddingBottom: 20,
+                paddingTop: 30,
+                //paddingBottom: 10,
+                marginBottom: 40,
               }}
             >
-              <View
-                style={{
-                  fontSize: 13,
-                  textAlign: 'center',
-                  color: globalSetting.main_text_color,
-                  lineHeight: 20,
-                }}
-              >
-                {this.props.message}
-              </View>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-              <View
-                style={{
-                  flex: 1,
-                  borderTopWidth: 0.5,
-                  borderTopColor: globalSetting.drawer_line_color,
-                }}
-              />
+
+              <Container>
+                <Content>
+                  <List
+                    leftOpenValue={75}
+                    rightOpenValue={-75}
+                    dataSource={this.ds.cloneWithRows(this.state.listViewData)}
+                    renderRow={data =>
+                      <ListItem>
+                        <TouchableOpacity onPress={() => { this.getbook(data.sku)}} 
+                        style={{ width: '100%', paddingLeft: 10, paddingRight: 10 }}><Text >{data.sku} - {data.name}</Text></TouchableOpacity>
+                      </ListItem>}
+                    renderLeftHiddenRow={data =>
+                      <Button full onPress={() => alert(data.sku)}>
+                        <Icon active name="information-circle" />
+                      </Button>}
+                    renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+                      <Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap, data)}>
+                        <Icon active name="trash" />
+                      </Button>}
+                  />
+                </Content>
+              </Container>
+
             </View>
             <TouchableOpacity
               style={{
@@ -79,6 +133,9 @@ export default class LogScan extends Component {
                 height: 50,
                 justifyContent: 'center',
                 alignItems: 'center',
+                backgroundColor: 'orange',
+                borderBottomLeftRadius: 18,
+                borderBottomRightRadius: 18
               }}
               onPress={() => {
                 setTimeout(() => {
@@ -97,8 +154,9 @@ export default class LogScan extends Component {
               >
                 <Text
                   style={{
-                    color: globalSetting.main_orange_color,
-                    fontSize: 15,
+                    color: 'white',
+                    fontSize: 18,
+                    fontWeight: 'bold',
                   }}
                 >
                   {this.props.buttonTittle}
@@ -123,3 +181,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 })
+
+function select(store) {
+  return {
+    book: store.book,
+    user: store.user,
+  }
+}
+
+module.exports = connect(select)(LogScan)

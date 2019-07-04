@@ -11,21 +11,16 @@ function scan(sessionId,bookstoreId,sku): ThunkAction {
     }
     
     return new Promise ((resolve,reject) => {dispatch(ApiPost("bookshelf/product/scan", data)).then(function(response) {
-      //console.log("o day ne ma"); 
-      //console.log(response.data.sku);
       if (response.data.entity_id) {
         dispatch({
           type: "SCAN_SUCCESS",
           data: response.data,
-          sku: response.data.sku,
-          name: response.data.name,
         });
         resolve("scansuccess")
         }
         else {
           dispatch({
             type: "SCAN_FAIL",
-            sku: response.data.sku
           });
           reject("scanfail")
         }

@@ -5,8 +5,10 @@ import CameraView from './Camera/CameraView'
 import {showToast} from "../../../actions"
 import { connect } from 'react-redux'
 import { scan } from '../../../actions/scan'
+import {savehistory} from '../../../actions/savehistory'
 import Footer from '../../Common/Footer'
 import LogScan from '../LogScan'
+import AlertComfirmBlock from '../../Common/AlertConfirmBlock'
 
 
 class ScanSKU extends Component {
@@ -23,7 +25,9 @@ class ScanSKU extends Component {
       isShowSuccess: false,
       isShowCamera: true,
       modalVisible: false,
-      logscan: this.props.book.logscan
+      isShowConfirmBlock: false,
+      bookinfor: this.props.book.bookInfor,
+      arrayhistory: []
     }
     this.isScanProduct = true
     this.scanFlag = false
@@ -31,6 +35,7 @@ class ScanSKU extends Component {
     this.isShowShelfToast = false,
     this.listener = this.props.navigation.addListener("willFocus", () => {
       this.turnOnCamera();
+      this.closemodal();
       });
 
   }
@@ -47,11 +52,20 @@ class ScanSKU extends Component {
     }
   }
 
+
   turnOnCamera() {
     this.scanFlag = false
     this.setState({ isShowCamera: true })
   }
   checkbook(sku) {
+    this.setState({
+      sku: sku,
+      arrayhistory: [{
+        sku: sku,
+        name : '',
+        status : false}
+      ]
+    })
     let data = {
       sessionId: this.props.user.userInfor.token,
       bookstoreId: this.props.user.userInfor.bookstoreId,
@@ -62,13 +76,14 @@ class ScanSKU extends Component {
       .then(res => {
         if(res == "scansuccess")
         {
-          this.props.navigation.navigate('bookInforView')
+          this.props.navigation.navigate('bookInforView',{showRightButton:true})
         }}
       )
       .catch(e =>{
         if(e == "scanfail")
         {
-          this.props.dispatch(showToast("Không tồn tại sản phẩm"))
+          this.setState({
+            isShowConfirmBlock: true });
           this.turnOnCamera();
         }
         else {
@@ -96,29 +111,14 @@ class ScanSKU extends Component {
   closemodal() {
     this.setModalVisible(false);
   }
-  showlogscan(logscans){
-    var result = null;
-    if (logscans.length >0) {
-      result = logscans.map((item, index) => {
-        if(item.flag == true){
-          return(
-            <Text style={{color:'red'}}>
-              {item.sku}
-            </Text>
-          );
-        }
-        else{
-          return(
-            <Text>
-              {item.sku}
-            </Text>
-          );
-        }
-      });
-    }
-    return result;
-  }
 
+  savehistory(arrayhistory) {
+    this.props.dispatch(savehistory(arrayhistory));
+    this.setState({
+      isShowConfirmBlock: false,
+      });
+  }
+  
   switchScanType(type = 'product') {
     if (type == 'bookshelf') {
       this.isScanProduct = false
@@ -155,11 +155,18 @@ class ScanSKU extends Component {
         />
       )
     }
-
+    //console.log("logscan: ",this.props.book.logscan)
     return (
       <View style={styles.container}>
-        <LogScan message={this.showlogscan(this.state.logscan)} title={'Lịch sử thao tác'} isShowAlertView={this.state.modalVisible} buttonTittle={'Close'} callBack={() => { this.closemodal() }}></LogScan>
+        <LogScan navigation = {this.props.navigation} message={this.props.book.logscan} title={'Lịch sử thao tác'} isShowAlertView={this.state.modalVisible} buttonTittle={'Đóng'} callBack={() => { this.closemodal() }}></LogScan>
         {camera}
+        <AlertComfirmBlock isShowConfirmBlock={this.state.isShowConfirmBlock}
+                            message={"Mã SKU không đúng. Bạn có muốn SCAN tiếp?"}
+                            leftTitle={"Có"}
+                            rightTitle={"Không"} 
+                            callBackRightButton={() => { this.setState({isShowConfirmBlock: false}) }}
+                            callBack={() => { this.savehistory(this.state.arrayhistory) }}>
+        </AlertComfirmBlock>
         <Footer navigation = {this.props.navigation} showRightButton={'orange'} rightText={'Lịch sử'} callBackRight={() => { this.openmodal() }}></Footer>
       </View>
     )
