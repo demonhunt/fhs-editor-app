@@ -6,6 +6,7 @@ import {combineReducers} from 'redux';
   user: require('./user'),
   book: require('./book'),
   chooseDatabase: require('./chooseDatabase'),
+  shelfBook : require('./shelfBook'),
 
 })
 
