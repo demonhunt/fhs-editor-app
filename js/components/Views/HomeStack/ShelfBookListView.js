@@ -62,7 +62,6 @@ class ShelfBookListView extends Component {
     }
     render(){
         //console.log(this.props.shelfBook.bookSheflInfor[0])
-        console.log("AAA" + this.props.shelfBook.bookSelected[0].name)
         return(
             <View style={{flex:1}}>
                 <FlatList
