@@ -7,6 +7,7 @@ import HomeMain from "./components/Views/HomeStack/HomeMain";
 import LoginView from "./components/Views/LoginView";
 import ScanSKU from "./components/Views/HomeStack/ScanView";
 import BookInforView from "./components/Views/HomeStack/BookInforView";
+import ShelfBookListView from './components/Views/HomeStack/ShelfBookListView';
 
 class BookshelfApp extends Component {
   constructor(props) {
@@ -35,7 +36,8 @@ class BookshelfApp extends Component {
       {
         home: { screen: HomeMain },
         scanSKU: {screen: ScanSKU},
-        bookInforView: {screen: BookInforView}
+        bookInforView: {screen: BookInforView},
+        shelfBookListView : ShelfBookListView,
       },
       
       {

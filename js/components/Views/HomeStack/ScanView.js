@@ -6,9 +6,11 @@ import {showToast} from "../../../actions"
 import { connect } from 'react-redux'
 import { scan } from '../../../actions/scan'
 import {savehistory} from '../../../actions/savehistory'
+import {scanShelf} from '../../../actions/scanShelf'
 import Footer from '../../Common/Footer'
 import LogScan from '../LogScan'
 import AlertComfirmBlock from '../../Common/AlertConfirmBlock'
+
 
 
 class ScanSKU extends Component {
@@ -90,13 +92,44 @@ class ScanSKU extends Component {
         }
       })
   }
-  
+  checkbookSheft(bookshelfId){
+    let data = {
+      sessionId: this.props.user.userInfor.token,
+      bookstoreId: this.props.user.userInfor.bookstoreId,
+      bookshelfId: bookshelfId,
+    }   
+    this.props.dispatch(scanShelf(data.sessionId, data.bookstoreId, data.bookshelfId))
+      .then(res => {
+        if(res == "scanShelfSuccess")
+        {
+          this.props.navigation.navigate('shelfBookListView')
+          //console.log('12345678902134567890-234567890-234567890-')
+        }}
+      )
+      .catch(e =>{
+        if(e == "scanShelfFail")
+        {
+          this.props.navigation.navigate('shelfBookListView')
+        }
+        else {
+        }
+      })
+  }
   async onBarCodeRead(e){
-    this.checkbook(e.data);
+    if (this.isScanProduct) {
+      this.checkbook(e.data);
+    } else {
+      this.checkbookSheft(e.data);
+    }
   }
 
   async onClickSearch(text){
-    this.checkbook(text);
+    if (this.isScanProduct) {
+      this.checkbook(text);
+    } else {
+      this.checkbookSheft(text);
+    }
+    
   }
   goBack(){
       this.props.navigation.goBack()

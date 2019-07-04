@@ -13,7 +13,7 @@ import globalSetting from '../../common/setting'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import ImageUtil from '../../common/image/ImageUtil'
 import { connect } from 'react-redux'
-import AlertView from './AlertView'
+import AlertView from '../Common/AlertView'
 import { login, chooseDatabase } from '../../actions'
 import ShowLoadingView from '../../common/ShowLoadingView'
 
@@ -86,6 +86,7 @@ class LoginView extends Component {
             this.setState({ isShowAlertView: false });
           }}
           message={this.props.user.message}
+          buttonTittle = {'Close'}
         />
         <View style={{ flex: 1 }}>
           <TouchableOpacity

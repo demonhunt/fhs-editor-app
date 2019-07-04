@@ -12,7 +12,8 @@ import {
 import { connect } from "react-redux";
 import { logout } from "../../../actions";
 import globalSetting from "../../../common/setting";
-import AlertYesNo from '../AlertYesNo';
+//import AlertYesNo from '../AlertYesNo';
+import AlertConfirmBlock from '../../Common/AlertConfirmBlock';
 import { PermissionsAndroid} from "react-native";
 import ImageUtil from '../../../common/image/ImageUtil';
 
@@ -123,16 +124,21 @@ export default class HomeMain extends Component {
     //console.log(this.props.user);
     return (
       <View style={styles.content}>
-        <AlertYesNo
-            isShowAlertView={this.state.isShowAlertView}
+        <AlertConfirmBlock
+            isShowConfirmBlock={this.state.isShowAlertView}
             callBack={() => {
               this.setState({ isShowAlertView: false });
             }}
-            callBlackLogout={()=>{ this.props.dispatch({
+            callBackRightButton={()=>{ this.props.dispatch({
                 type: 'LOGOUT_SUCCESS'})
             }}
-            message="Are you sure?"
+            message={"Are you sure?"}
+            leftTitle = {'No'}
+            rightTitle = {'Yes'}
+            changeColor = {'true'}
+
           />
+          
       <View style={styles.contentHeader}>
         <View style={{
           flex:1,
