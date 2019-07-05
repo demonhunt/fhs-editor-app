@@ -52,7 +52,28 @@ class LogScan extends Component {
             isShowAlertView: false });
           this.props.navigation.navigate('bookInforView',{showRightButton:false})
         }}
+      ).catch(e =>{
+        if(e == "scanfail")
+        {}
+      })
+  }
+  showItem(data) {
+    if(data.status === false){
+      return(
+      <View>
+          <Text style={{color:'green', textAlign: 'left'}}>{data.sku}</Text>
+          <Text style={{color:'green', textAlign: 'left'}}>Không tồn tại đầu sách</Text>
+      </View>
       )
+    }
+    else {
+      return(
+        <View style={{}}>
+          <Text style={{textAlign: 'left'}}>{data.sku}</Text>
+          <Text style={{textAlign: 'left'}}>{data.name}</Text>
+      </View>
+      )
+    }
   }
   render() {
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -76,7 +97,6 @@ class LogScan extends Component {
           >
             <View
               style={{
-                alignItems: 'center',
                 margin: 35,
                 paddingTop: 10,
                 paddingLeft: 10,
@@ -96,14 +116,10 @@ class LogScan extends Component {
             </View>
             <View
               style={{
-                alignItems: 'center',
-                justifyContent: 'center',
                 paddingTop: 30,
-                //paddingBottom: 10,
                 marginBottom: 40,
               }}
             >
-
               <Container>
                 <Content>
                   <List
@@ -113,7 +129,9 @@ class LogScan extends Component {
                     renderRow={data =>
                       <ListItem>
                         <TouchableOpacity onPress={() => { this.getbook(data.sku)}} 
-                        style={{ width: '100%', paddingLeft: 10, paddingRight: 10 }}><Text >{data.sku} - {data.name}</Text></TouchableOpacity>
+                            style={{ width: '100%', paddingLeft: 10, paddingRight: 10 }}>
+                            {this.showItem(data)}
+                        </TouchableOpacity>
                       </ListItem>}
                     renderRightHiddenRow={(data, secId, rowId, rowMap) =>
                       <Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap, data)}>
@@ -122,14 +140,11 @@ class LogScan extends Component {
                   />
                 </Content>
               </Container>
-
             </View>
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
                 height: 50,
-                justifyContent: 'center',
-                alignItems: 'center',
                 backgroundColor: 'orange',
                 borderBottomLeftRadius: 18,
                 borderBottomRightRadius: 18,

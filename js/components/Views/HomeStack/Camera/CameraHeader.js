@@ -186,12 +186,12 @@ export default class CameraHeader extends Component {
                 underlineColorAndroid={'transparent'}
                 placeholderTextColor={'white'}
                 value={this.state.searchText}
-                onEndEditing={() => {
-                  if (this.state.searchText) {
-                    this.refTextInput.clear()
-                    this.props.onClickSearch(this.state.searchText)
-                  }
-                }}
+                // onEndEditing={() => {
+                //   if (this.state.searchText) {
+                //     this.refTextInput.clear()
+                //     this.props.onClickSearch(this.state.searchText)
+                //   }
+                // }}
                 autoFocus={this.props.useCamera ? false : true}
               />
             </View>
@@ -267,12 +267,12 @@ export default class CameraHeader extends Component {
                 }
                 autoCapitalize={'characters'}
                 value={this.state.searchText}
-                onEndEditing={() => {
-                  if (this.state.searchText) {
-                    this.refTextInput.clear()
-                    this.props.onClickSearch(this.state.searchText)
-                  }
-                }}
+                // onEndEditing={() => {
+                //   if (this.state.searchText) {
+                //     this.refTextInput.clear()
+                //     this.props.onClickSearch(this.state.searchText)
+                //   }
+                // }}
                 autoFocus={this.props.useCamera ? false : true}
               />
             </View>

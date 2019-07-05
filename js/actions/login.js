@@ -12,8 +12,6 @@ function login(username, password): ThunkAction {
     
     return new Promise ((resolve,reject)=>{dispatch(ApiPost("bookshelf/login", data))
       .then(response => {
-        //console.log("o day");
-        //console.log(response.success);
         if (response.success === true ) {
           dispatch({
             type: "LOGIN_SUCCESS",

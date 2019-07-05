@@ -103,7 +103,6 @@ class ScanSKU extends Component {
         if(res == "scanShelfSuccess")
         {
           this.props.navigation.navigate('shelfBookListView')
-          //console.log('12345678902134567890-234567890-234567890-')
         }}
       )
       .catch(e =>{
@@ -188,7 +187,6 @@ class ScanSKU extends Component {
         />
       )
     }
-    //console.log("logscan: ",this.props.book.logscan)
     return (
       <View style={styles.container}>
         <LogScan navigation = {this.props.navigation} message={this.props.book.logscan} title={'Lịch sử thao tác'} isShowAlertView={this.state.modalVisible} buttonTittle={'Đóng'} callBack={() => { this.closemodal() }}></LogScan>

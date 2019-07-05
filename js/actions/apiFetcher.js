@@ -17,7 +17,6 @@ function ApiPost(url,data) : ThunkAction {
       referrer: 'no-referrer',
       body: JSON.stringify(data)
   }).then(res => {
-    //console.log(res.json());
     resolve(res.json())}
     )
   .catch(e=> {

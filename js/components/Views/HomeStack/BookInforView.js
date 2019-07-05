@@ -36,7 +36,6 @@ class BookInforView extends Component {
     }
   }
   componentDidMount() {
-    //console.log(this.props.book)
   }
   savehistory(arrayhistory) {
     this.props.dispatch(savehistory(arrayhistory));
