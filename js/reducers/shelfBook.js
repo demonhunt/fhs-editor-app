@@ -7,9 +7,9 @@ export type State = {
 }
 
 var initialState = {
-  bookSheflInfor: {},
+  bookSheflInfor: [],
   isSuccess : false,
-  bookSelected : {},
+  bookSelected : [],
 }
 
 function shelfBook(state: State = initialState, action: Action): State {
@@ -26,6 +26,7 @@ function shelfBook(state: State = initialState, action: Action): State {
       case 'SCAN_SHELF_FAIL':
       return {
         ...state,
+        isSuccess : false,
       }
       case 'BOOK_SELECTED_HIGHLIGHT':
       return{
@@ -37,16 +38,22 @@ function shelfBook(state: State = initialState, action: Action): State {
       }
       case 'BOOK_SELECTED_ADD' :
       //console.log(action.list)
+      //console.log(booklist)
+      let listFormat = action.list.filter(item =>{
+          item.status = true
+          return item.isStatus === true
+      })
+      //console.log(listFormat)
       return{
         ...state,
-        bookSelected : action.list.map(item =>{
-          if(item.isStatus == 'true')
-          {item.status = "true"
-          //console.log(item)
-          return item}
-        })
-
+        bookSelected : listFormat
       }
+      case 'BOOK_SELECTED_RESET' :
+        return{
+          ...state,
+          bookSelected : [],
+          bookSheflInfor: [],
+        }
     default:
       return state
   }

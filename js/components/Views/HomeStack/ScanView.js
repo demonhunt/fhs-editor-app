@@ -10,7 +10,7 @@ import {scanShelf} from '../../../actions/scanShelf'
 import Footer from '../../Common/Footer'
 import LogScan from '../LogScan'
 import AlertComfirmBlock from '../../Common/AlertConfirmBlock'
-
+import checkTextRegex from '../../../common/regex'
 
 
 class ScanSKU extends Component {
@@ -93,6 +93,7 @@ class ScanSKU extends Component {
       })
   }
   checkbookSheft(bookshelfId){
+    if(checkTextRegex.test(bookshelfId)){
     let data = {
       sessionId: this.props.user.userInfor.token,
       bookstoreId: this.props.user.userInfor.bookstoreId,
@@ -114,6 +115,7 @@ class ScanSKU extends Component {
         else {
         }
       })
+    }else  this.props.navigation.navigate('shelfBookListView')
   }
   async onBarCodeRead(e){
     if (this.isScanProduct) {
@@ -127,6 +129,7 @@ class ScanSKU extends Component {
     if (this.isScanProduct) {
       this.checkbook(text);
     } else {
+
       this.checkbookSheft(text);
     }
     
