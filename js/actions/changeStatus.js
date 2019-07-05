@@ -21,4 +21,12 @@ function addListBook(list): ThunkAction {
   }
 }
 
-module.exports = { changeStatus, addListBook}
+function resetListBook(): ThunkAction {
+  return (dispatch, getState) => {
+    dispatch({
+      type: 'BOOK_SELECTED_RESET'
+    })
+  }
+}
+
+module.exports = { changeStatus, addListBook, resetListBook}
