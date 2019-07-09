@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import PriceFormat from '../../../common/PriceFormat'
 import globalSetting from "../../../common/setting"
 import Footer from '../../Common/Footer'
 import {savehistory} from '../../../actions/savehistory'
 import Header from '../../Common/HeaderCommon'
+import langvi from '../../../common/langvi'
 
 class BookInforView extends Component {
   static navigationOptions = {
@@ -20,8 +21,35 @@ class BookInforView extends Component {
         name : this.props.book.bookInfor.name,
         status : true
       }],
-      showRightButton: this.props.navigation.state.params.showRightButton
+      showRightButton: this.props.navigation.state.params.showRightButton,
+      dataFake : [
+        {
+            "sku": "8936062808099",
+            "image": "/c/u/cuoc-hen-binh-minh.jpg",
+            "size_product": "13x19.5",
+            "material": null,
+            "color": null,
+            "warranty": null,
+            "origin": null,
+            "age": null,
+            "weight": "350.0000",
+            "price": "76000.0000",
+            "name": "Cuộc Hẹn Bình Minh",
+            "description": null,
+            "visibility": "4",
+            "status": "1",
+            "soon_release": "0",
+            "supplier": "AZ Việt Nam",
+            "publisher": "Văn Học",
+            "publisher_year": "01/2016",
+            "author": "Yasushi Kitagawa",
+            "quantity_of_page": "208"
+        }
+      ],
     }
+  }
+  dataLangFormat(type){
+     return langvi['product'][type]
   }
   showFooter(showRightButton){
     if(showRightButton === true){
@@ -55,25 +83,49 @@ class BookInforView extends Component {
             />
           <Text style={{fontSize: 15, color: 'black'}}>{this.state.data.name}</Text>
         </View>
-        <View style={styles.row1}>
+        {/* <View style={styles.row1}>
             <View>
               <Text style={{fontWeight: "bold",color: 'black'}}>{this.state.data.sku}</Text>
             </View>
             <View>
               <Text style={{color: globalSetting.main_orange_color,fontWeight: "bold", textAlign: 'right'}}>{price} / <Text style={{fontWeight: "bold",color: '#333', textAlign: 'right'}}>{this.state.data.unit}</Text> </Text>
             </View>
-        </View>
+        </View> */}
         <View style={styles.row2}>
-            <View style={[styles.box]}></View>
-            <View style={[styles.box]}></View>
-            <View style={[styles.box]}></View>
+            <FlatList
+              data={this.state.dataFake}
+              renderItem={({item,index})=>{
+                var dataFake = Object.keys(item).map(function(key) {
+                    //console.log(item)
+                    return <GetAllItem title={key} info ={item[key]}></GetAllItem>
+                });
+                return dataFake
+              }}
+              keyExtractor={(item, index) => {
+                return 0;
+              }}
+            />
         </View>
           {this.showFooter(this.state.showRightButton)}
       </View>
     );
   }
 }
+class GetAllItem extends Component{
+  render(){
 
+    return(
+      <View style={{flex:1, flexDirection:'row'}}>
+        <View style={{flex:1}}>
+              <Text style={{fontSize: 15, fontWeight: "bold",color: 'black'}}>{this.props.title}</Text>
+        </View>
+        <View style={{flex:1}}>
+              <Text style={{color: globalSetting.main_orange_color,fontWeight: "bold", textAlign: 'right', fontSize: 15,}}>{this.props.info}</Text>
+        </View>
+      </View>
+    )
+  }
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -101,7 +153,6 @@ const styles = StyleSheet.create({
   },
   row2: {
     flex: 4,
-    flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 5,
     marginLeft: 10,
@@ -115,7 +166,8 @@ const styles = StyleSheet.create({
   },
   box: {
     flex: 1,
-    height: 150,
+    backgroundColor : 'red',
+    marginTop: 5,
   }
 });
 

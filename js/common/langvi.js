@@ -16,6 +16,29 @@ var langvi = {
     "DELI_MSCAN_NO_ITEM": "Đơn hàng không hợp lệ",
     "DEL_ORDER_NOT_FOUND": "Không tìm được thông tin"
   },
+  
+  product : {
+    sku : 'sku',
+    image : 'hình ảnh',
+    size_product : 'Kích cỡ',
+    material: 'Chất liệu',
+    color: 'Màu',
+    warranty: 'Bảo hành',
+    origin: 'Nguồn gốc',
+    age: 'Độ tuổi',
+    weight: 'Cân nặng',
+    price: 'Giá',
+    name: 'Tên sách',
+    description: 'Mô tả',
+    visibility: 'Hiện',
+    status: 'Tình trạng',
+    soon_release: 'Sắp có',
+    supplier: 'Nhà cung cấp',
+    publisher: 'Nhà xuất bản',
+    publisher_year: 'Năm xuất bản',
+    author: 'Tác giả',
+    quantity_of_page: 'Số trang',
+  },
 }
 
 module.exports = langvi

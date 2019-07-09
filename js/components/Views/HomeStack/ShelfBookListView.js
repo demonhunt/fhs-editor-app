@@ -26,8 +26,7 @@ class GetAllItem extends Component{
             <View style={{flex:1}}>
                 <TouchableOpacity onPress={()=>{
                     //console.log(' dispatch value ' , this.props.item.isStatus)
-                    // this.props.dispatch(changeStatus(this.props.item.sku))
-                    
+                    // this.props.dispatch(changeStatus(this.props.item.sku)) 
                     this.props.onPressHightLight(this.props.item.sku)
                     }}>
                 <View style={changeBackGroundColor}>
@@ -103,7 +102,7 @@ class ShelfBookListView extends Component {
     }
     render(){
         //console.log(this.props.shelfBook.bookSheflInfor)
-        //console.log("BBB===================" + this.props.shelfBook.bookSelected)
+        console.log("BBB===================")
         const checkShowButton = this.props.shelfBook.bookSelected.length > 0 ? true : false
         if(this.props.shelfBook.isSuccess && this.props.shelfBook.bookSheflInfor.length > 0 ){
         return(
@@ -124,13 +123,19 @@ class ShelfBookListView extends Component {
                     showRightButton= {checkShowButton}
                     rightText = {'Them'}
                     navigation = {this.props.navigation}
-                    callBackLeft = {()=>{this.onClickGoBack()}}
                     callBackRight = {()=>{this.onClickAddBook()}}
                 />
             </View>
         )}
         else return (
-            <View style={styles.ViewError}><Text style={styles.textError}>Error</Text></View>
+            <View style={{flex:1}}>
+            <View style={styles.ViewError}>
+                <Text style={styles.textError}>Error</Text>
+            </View>
+                <Footer
+                    callBackLeft = {()=>{this.props.navigation.goBack()}}
+                />
+            </View>
         )
     }
 }

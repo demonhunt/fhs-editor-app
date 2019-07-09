@@ -114,7 +114,7 @@ class ScanSKU extends Component {
         else {
         }
       })
-    }else  this.props.navigation.navigate('shelfBookListView')
+    }else  this.props.dispatch(showToast())
   }
   async onBarCodeRead(e){
     if (this.isScanProduct) {
@@ -128,8 +128,9 @@ class ScanSKU extends Component {
     if (this.isScanProduct) {
       this.checkbook(text);
     } else {
-
+      //console.log(text)
       this.checkbookSheft(text);
+
     }
     
   }
