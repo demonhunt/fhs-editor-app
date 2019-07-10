@@ -4,7 +4,8 @@ import type { Action } from '../actions/types'
 
 var initialState = {
   bookInfor: {},
-  logscan: []
+  logscan: [],
+  imageBook : [],
 }
 
 function book(state = initialState, action: Action): State {
@@ -28,6 +29,15 @@ function book(state = initialState, action: Action): State {
           ...state.logscan.slice(0, action.index),
           ...state.logscan.slice(action.index + 1)
       ]
+    }
+    case 'IMAGE_SUCCESS':
+      return {
+        ...state,
+        imageBook: action.imageBook,
+      }
+    case 'IMAGE_FAIL':
+      return {
+        ...state,
       }
     default:
       return state

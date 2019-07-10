@@ -70,11 +70,9 @@ class ScanSKU extends Component {
     })
     let data = {
       sessionId: this.props.user.userInfor.token,
-      bookstoreId: this.props.user.userInfor.bookstoreId,
       sku: sku,
-      bundleId: 0,
     }
-      this.props.dispatch(scan(data.sessionId, data.bookstoreId, data.sku))
+      this.props.dispatch(scan(data.sessionId, data.sku))
       .then(res => {
         if(res == "scansuccess")
         {

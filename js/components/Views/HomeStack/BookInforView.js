@@ -6,7 +6,7 @@ import globalSetting from "../../../common/setting"
 import Footer from '../../Common/Footer'
 import {savehistory} from '../../../actions/savehistory'
 import Header from '../../Common/HeaderCommon'
-import langvi from '../../../common/langvi'
+import GallerySwiper from '../../../common/GallerySwiper'
 
 class BookInforView extends Component {
   static navigationOptions = {
@@ -15,41 +15,14 @@ class BookInforView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: this.props.book.bookInfor,
+      data: [],
       arrayhistory: [{
         sku: this.props.book.bookInfor.sku,
         name : this.props.book.bookInfor.name,
         status : true
       }],
       showRightButton: this.props.navigation.state.params.showRightButton,
-      dataFake : [
-        {
-            "sku": "8936062808099",
-            "image": "/c/u/cuoc-hen-binh-minh.jpg",
-            "size_product": "13x19.5",
-            "material": null,
-            "color": null,
-            "warranty": null,
-            "origin": null,
-            "age": null,
-            "weight": "350.0000",
-            "price": "76000.0000",
-            "name": "Cuộc Hẹn Bình Minh",
-            "description": null,
-            "visibility": "4",
-            "status": "1",
-            "soon_release": "0",
-            "supplier": "AZ Việt Nam",
-            "publisher": "Văn Học",
-            "publisher_year": "01/2016",
-            "author": "Yasushi Kitagawa",
-            "quantity_of_page": "208"
-        }
-      ],
     }
-  }
-  dataLangFormat(type){
-     return langvi['product'][type]
   }
   showFooter(showRightButton){
     if(showRightButton === true){
@@ -69,40 +42,31 @@ class BookInforView extends Component {
     this.props.dispatch(savehistory(arrayhistory));
     this.props.navigation.goBack();
   }
-
+  
   render() {
-    let price = PriceFormat.formatTotal(this.state.data.price);
+    //console.log(this.props.book.imageBook)
     return (
       <View style={styles.container}>
       <Header headerCenter={"Thông tin sách"}></Header>
         <View style={styles.row}>
-          <Image
-              style={{ width: 280, height: 270 }}
-              source={{uri: this.state.data.image}}
-              resizeMode="contain"
+          <GallerySwiper
+              imageList={this.props.book.imageBook}
             />
-          <Text style={{fontSize: 15, color: 'black'}}>{this.state.data.name}</Text>
         </View>
-        {/* <View style={styles.row1}>
-            <View>
-              <Text style={{fontWeight: "bold",color: 'black'}}>{this.state.data.sku}</Text>
-            </View>
-            <View>
-              <Text style={{color: globalSetting.main_orange_color,fontWeight: "bold", textAlign: 'right'}}>{price} / <Text style={{fontWeight: "bold",color: '#333', textAlign: 'right'}}>{this.state.data.unit}</Text> </Text>
-            </View>
-        </View> */}
         <View style={styles.row2}>
             <FlatList
-              data={this.state.dataFake}
+              data={this.props.book.bookInfor}
               renderItem={({item,index})=>{
-                var dataFake = Object.keys(item).map(function(key) {
-                    //console.log(item)
-                    return <GetAllItem title={key} info ={item[key]}></GetAllItem>
-                });
-                return dataFake
+                //delete item['image']
+                // var dataFake = Object.keys(item).map(function(key) {
+                //     if(key != 'image')
+                //   return <GetAllItem title={key} info ={item[key]}></GetAllItem>
+                     return <GetAllItem item={item}></GetAllItem>
+                // });
+                // return dataFake
               }}
               keyExtractor={(item, index) => {
-                return 0;
+                        return index.toString();
               }}
             />
         </View>
@@ -113,17 +77,23 @@ class BookInforView extends Component {
 }
 class GetAllItem extends Component{
   render(){
-
-    return(
-      <View style={{flex:1, flexDirection:'row'}}>
-        <View style={{flex:1}}>
-              <Text style={{fontSize: 15, fontWeight: "bold",color: 'black'}}>{this.props.title}</Text>
-        </View>
-        <View style={{flex:1}}>
-              <Text style={{color: globalSetting.main_orange_color,fontWeight: "bold", textAlign: 'right', fontSize: 15,}}>{this.props.info}</Text>
-        </View>
-      </View>
-    )
+    //let title = this.props.title == 'price' ? PriceFormat.formatTotal(this.state.data.price) : 
+    const {item} = this.props
+    const data = Object.values(item)
+    console.log(item)
+        return(
+          <View style={{flex:1, marginTop:5}}>
+            <View style={{flex:1, flexDirection:'row'}}>
+              <View style={{flex:1}}>
+                    <Text style={{fontSize: 15, fontWeight: "bold",color: 'black'}}>{item['vi']}</Text>
+              </View>
+              <View style={{flex:1}}>
+                    <Text style={{color: globalSetting.main_orange_color,fontWeight: "bold", textAlign: 'right', fontSize: 15,}}>{data[0]}</Text>
+              </View>
+            </View>
+            <View style={{height:1, backgroundColor:globalSetting.main_orange_color}}></View>
+          </View>
+        )
   }
 }
 const styles = StyleSheet.create({
@@ -134,25 +104,28 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   row: {
-    flex: 6,
+    flex: 1,
+    //height: 500,
     marginBottom: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
+    //justifyContent: 'center',
+    //alignItems: 'center',
+    //flexDirection: 'column',
     marginLeft: 10,
     marginRight: 10,
+    //backgroundColor : 'red'
   },
   row1: {
-    flex: .5,
+    flex: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginLeft: 10,
     marginRight: 10,
     borderBottomWidth: 2,
-    borderBottomColor: globalSetting.main_orange_color
+    borderBottomColor: globalSetting.main_orange_color,
+    //backgroundColor: 'red'
   },
   row2: {
-    flex: 4,
+    flex: 1,
     justifyContent: 'space-between',
     marginBottom: 5,
     marginLeft: 10,
