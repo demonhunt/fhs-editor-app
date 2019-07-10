@@ -26,10 +26,10 @@ class LogScan extends Component {
     this.setState({ listViewData: newData });
   }
   componentWillReceiveProps(nextProps){
-    if(nextProps.message!=this.props.message){
+    if(nextProps.message != this.props.message){
       this.setState({listViewData: nextProps.message})
     }
-    if(nextProps.isShowAlertView!=this.props.isShowAlertView){
+    if(nextProps.isShowAlertView != this.props.isShowAlertView){
       this.setState({isShowAlertView: nextProps.isShowAlertView})
     }
   }
@@ -68,7 +68,7 @@ class LogScan extends Component {
     }
     else {
       return(
-        <View style={{}}>
+        <View>
           <Text style={{textAlign: 'left'}}>{data.sku}</Text>
           <Text style={{textAlign: 'left'}}>{data.name}</Text>
       </View>
@@ -135,7 +135,7 @@ class LogScan extends Component {
                       </ListItem>}
                     renderRightHiddenRow={(data, secId, rowId, rowMap) =>
                       <Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap, data)}>
-                        <Icon active name="trash" />
+                        <Icon active name="trash"/>
                       </Button>}
                   />
                 </Content>

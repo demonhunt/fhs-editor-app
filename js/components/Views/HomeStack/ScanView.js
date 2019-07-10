@@ -78,6 +78,7 @@ class ScanSKU extends Component {
       .then(res => {
         if(res == "scansuccess")
         {
+          this.turnOffCamera();
           this.props.navigation.navigate('bookInforView',{showRightButton:true})
         }}
       )
@@ -196,10 +197,11 @@ class ScanSKU extends Component {
         {camera}
         <AlertComfirmBlock isShowConfirmBlock={this.state.isShowConfirmBlock}
                             message={"Mã SKU không đúng. Bạn có muốn SCAN tiếp?"}
-                            leftTitle={"Có"}
-                            rightTitle={"Không"} 
-                            callBackRightButton={() => { this.setState({isShowConfirmBlock: false}) }}
-                            callBack={() => { this.savehistory(this.state.arrayhistory) }}>
+                            leftTitle={"Không"}
+                            rightTitle={"Có"}
+                            changeColor={"true"}
+                            callBackRightButton={() => {this.savehistory(this.state.arrayhistory)}}
+                            callBack={() => {this.setState({isShowConfirmBlock: false})}}>
         </AlertComfirmBlock>
         <Footer navigation = {this.props.navigation} showRightButton={'orange'} rightText={'Lịch sử'} callBackRight={() => { this.openmodal() }}></Footer>
       </View>

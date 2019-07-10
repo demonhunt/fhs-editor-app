@@ -87,7 +87,7 @@ export default class HomeMain extends Component {
   }
 
   componentDidMount() {
-    //console.log(this.props.user)
+    console.log(this.props.user)
   }
 
   async requestCameraPermission(callBack) {

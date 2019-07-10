@@ -10,7 +10,7 @@ function login(username, password): ThunkAction {
     };
       
     
-    return new Promise ((resolve,reject)=>{dispatch(ApiPost("bookshelf/login", data))
+    return new Promise ((resolve,reject)=>{dispatch(ApiPost("editor/login", data))
       .then(response => {
         if (response.success === true ) {
           dispatch({

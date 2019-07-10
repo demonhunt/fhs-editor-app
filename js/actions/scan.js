@@ -10,8 +10,8 @@ function scan(sessionId,bookstoreId,sku): ThunkAction {
         bundleId: 0,
     }
     
-    return new Promise ((resolve,reject) => {dispatch(ApiPost("bookshelf/product/scan", data)).then(function(response) {
-      if (response.data.entity_id) {
+    return new Promise ((resolve,reject) => {dispatch(ApiPost("editor/scanbook", data)).then(function(response) {
+      if (response.success === true) {
         dispatch({
           type: "SCAN_SUCCESS",
           data: response.data,

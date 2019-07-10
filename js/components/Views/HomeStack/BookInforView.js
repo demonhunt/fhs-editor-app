@@ -50,7 +50,7 @@ class BookInforView extends Component {
         <View style={styles.row}>
           <Image
               style={{ width: 280, height: 270 }}
-              source={{uri: this.state.data.image}}
+              source={{uri: this.state.data.image[0]}}
               resizeMode="contain"
             />
           <Text style={{fontSize: 15, color: 'black'}}>{this.state.data.name}</Text>
@@ -60,7 +60,7 @@ class BookInforView extends Component {
               <Text style={{fontWeight: "bold",color: 'black'}}>{this.state.data.sku}</Text>
             </View>
             <View>
-              <Text style={{color: globalSetting.main_orange_color,fontWeight: "bold", textAlign: 'right'}}>{price} / <Text style={{fontWeight: "bold",color: '#333', textAlign: 'right'}}>{this.state.data.unit}</Text> </Text>
+              <Text style={{color: globalSetting.main_orange_color,fontWeight: "bold", textAlign: 'right'}}>{price}</Text>
             </View>
         </View>
         <View style={styles.row2}>
