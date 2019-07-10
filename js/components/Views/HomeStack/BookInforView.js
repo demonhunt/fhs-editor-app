@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import PriceFormat from '../../../common/PriceFormat'
 import globalSetting from "../../../common/setting"
 import Footer from '../../Common/Footer'
 import {savehistory} from '../../../actions/savehistory'
 import Header from '../../Common/HeaderCommon'
+import GallerySwiper from '../../../common/GallerySwiper'
 
 class BookInforView extends Component {
   static navigationOptions = {
@@ -14,13 +15,13 @@ class BookInforView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: this.props.book.bookInfor,
+      data: [],
       arrayhistory: [{
         sku: this.props.book.bookInfor.sku,
         name : this.props.book.bookInfor.name,
         status : true
       }],
-      showRightButton: this.props.navigation.state.params.showRightButton
+      showRightButton: this.props.navigation.state.params.showRightButton,
     }
   }
   showFooter(showRightButton){
@@ -41,39 +42,60 @@ class BookInforView extends Component {
     this.props.dispatch(savehistory(arrayhistory));
     this.props.navigation.goBack();
   }
-
+  
   render() {
-    let price = PriceFormat.formatTotal(this.state.data.price);
+    //console.log(this.props.book.imageBook)
     return (
       <View style={styles.container}>
       <Header headerCenter={"Thông tin sách"}></Header>
         <View style={styles.row}>
-          <Image
-              style={{ width: 280, height: 270 }}
-              source={{uri: this.state.data.image[0]}}
-              resizeMode="contain"
+          <GallerySwiper
+              imageList={this.props.book.imageBook}
             />
-          <Text style={{fontSize: 15, color: 'black'}}>{this.state.data.name}</Text>
-        </View>
-        <View style={styles.row1}>
-            <View>
-              <Text style={{fontWeight: "bold",color: 'black'}}>{this.state.data.sku}</Text>
-            </View>
-            <View>
-              <Text style={{color: globalSetting.main_orange_color,fontWeight: "bold", textAlign: 'right'}}>{price}</Text>
-            </View>
         </View>
         <View style={styles.row2}>
-            <View style={[styles.box]}></View>
-            <View style={[styles.box]}></View>
-            <View style={[styles.box]}></View>
+            <FlatList
+              data={this.props.book.bookInfor}
+              renderItem={({item,index})=>{
+                //delete item['image']
+                // var dataFake = Object.keys(item).map(function(key) {
+                //     if(key != 'image')
+                //   return <GetAllItem title={key} info ={item[key]}></GetAllItem>
+                     return <GetAllItem item={item}></GetAllItem>
+                // });
+                // return dataFake
+              }}
+              keyExtractor={(item, index) => {
+                        return index.toString();
+              }}
+            />
         </View>
           {this.showFooter(this.state.showRightButton)}
       </View>
     );
   }
 }
-
+class GetAllItem extends Component{
+  render(){
+    //let title = this.props.title == 'price' ? PriceFormat.formatTotal(this.state.data.price) : 
+    const {item} = this.props
+    const data = Object.values(item)
+    console.log(item)
+        return(
+          <View style={{flex:1, marginTop:5}}>
+            <View style={{flex:1, flexDirection:'row'}}>
+              <View style={{flex:1}}>
+                    <Text style={{fontSize: 15, fontWeight: "bold",color: 'black'}}>{item['vi']}</Text>
+              </View>
+              <View style={{flex:1}}>
+                    <Text style={{color: globalSetting.main_orange_color,fontWeight: "bold", textAlign: 'right', fontSize: 15,}}>{data[0]}</Text>
+              </View>
+            </View>
+            <View style={{height:1, backgroundColor:globalSetting.main_orange_color}}></View>
+          </View>
+        )
+  }
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -82,26 +104,28 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   row: {
-    flex: 6,
+    flex: 1,
+    //height: 500,
     marginBottom: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
+    //justifyContent: 'center',
+    //alignItems: 'center',
+    //flexDirection: 'column',
     marginLeft: 10,
     marginRight: 10,
+    //backgroundColor : 'red'
   },
   row1: {
-    flex: .5,
+    flex: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginLeft: 10,
     marginRight: 10,
     borderBottomWidth: 2,
-    borderBottomColor: globalSetting.main_orange_color
+    borderBottomColor: globalSetting.main_orange_color,
+    //backgroundColor: 'red'
   },
   row2: {
-    flex: 4,
-    flexDirection: 'row',
+    flex: 1,
     justifyContent: 'space-between',
     marginBottom: 5,
     marginLeft: 10,
@@ -115,7 +139,8 @@ const styles = StyleSheet.create({
   },
   box: {
     flex: 1,
-    height: 150,
+    backgroundColor : 'red',
+    marginTop: 5,
   }
 });
 

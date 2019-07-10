@@ -25,7 +25,9 @@ export default class CameraHeader extends Component {
       toteInfo: this.props.toteInfo,
     }
   }
-
+  reset() {
+    this.setState({searchText: '',});
+  }
   componentWillReceiveProps(nextProps) {
     if (this.state.isScanProduct != nextProps.isScanProduct) {
       this.setState({
@@ -197,12 +199,12 @@ export default class CameraHeader extends Component {
             </View>
 
             <TouchableOpacity
-              onPress={searchText => {
-                if (this.state.searchText) {
-                  this.refTextInput.clear()
-                  this.props.onClickSearch(this.state.searchText)
-                }
-              }}
+              // onPress={searchText => {
+              //   if (this.state.searchText) {
+              //     this.refTextInput.clear()
+              //     this.props.onClickSearch(this.state.searchText)
+              //   }
+              // }}
             >
               <View
                 style={{
@@ -267,12 +269,13 @@ export default class CameraHeader extends Component {
                 }
                 autoCapitalize={'characters'}
                 value={this.state.searchText}
-                // onEndEditing={() => {
-                //   if (this.state.searchText) {
-                //     this.refTextInput.clear()
-                //     this.props.onClickSearch(this.state.searchText)
-                //   }
-                // }}
+                onEndEditing={() => {
+                  if (this.state.searchText) {
+                    this.refTextInput.clear()
+                    this.props.onClickSearch(this.state.searchText)
+                    this.reset()
+                  }
+                }}
                 autoFocus={this.props.useCamera ? false : true}
               />
             </View>
@@ -281,7 +284,9 @@ export default class CameraHeader extends Component {
               onPress={searchText => {
                 if (this.state.searchText) {
                   this.refTextInput.clear()
+                  //console.log(this.refTextInput)
                   this.props.onClickSearch(this.state.searchText)
+                  this.reset()
                 }
               }}
             >

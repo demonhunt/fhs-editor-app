@@ -16,6 +16,34 @@ var langvi = {
     "DELI_MSCAN_NO_ITEM": "Đơn hàng không hợp lệ",
     "DEL_ORDER_NOT_FOUND": "Không tìm được thông tin"
   },
+  
+  product : {
+    "entity_id" : 'Entity_id',
+    "sku" : 'Sku',
+    "image" : 'Hình ảnh',
+    "size_product" : 'Kích cỡ',
+    "material": 'Chất liệu',
+    "color": 'Màu',
+    "warranty": 'Bảo hành',
+    "origin": 'Nguồn gốc',
+    "age": 'Độ tuổi',
+    "weight": 'Cân nặng',
+    "price": 'Giá',
+    "name": 'Tên sách',
+    "description": 'Mô tả',
+    "visibility": 'Hiện',
+    "status": 'Tình trạng',
+    "soon_release": 'Sắp có',
+    "supplier": 'Nhà cung cấp',
+    "publisher": 'Nhà xuất bản',
+    "publisher_year": 'Năm xuất bản',
+    "author": 'Tác giả',
+    "quantity_of_page": 'Số trang',
+    "near_quantity" : 'Tồn niên',
+    "more_image" : 'Xem thêm',
+    "video" : 'Video',
+    "inCatalog" : 'InCatalog',
+  },
 }
 
 module.exports = langvi
